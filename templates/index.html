@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explora o universo dos super-heróis com estatísticas detalhadas e visuais incríveis.">
+    <title>HERO INTEL | Arquivos Confidenciais</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="text-slate-200 min-h-screen">
+    <style>
+        
+    :root {
+        --hero-primary: #8b5cf6;
+        --hero-accent: #f43f5e;
+    }
+    
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #020617;
+        background-image: 
+            radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(244, 63, 94, 0.15) 0%, transparent 50%);
+        background-attachment: fixed;
+    }
+
+    .font-hero { font-family: 'Bangers', cursive; letter-spacing: 0.05em; }
+    
+    .glass-card {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .barra-progresso {
+        transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+    @keyframes scanline {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+    }
+    .scan-effect::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, transparent, rgba(139, 92, 246, 0.1), transparent);
+        animation: scanline 4s linear infinite;
+        pointer-events: none;
+    }
+    </style>
+    <!-- Cabeçalho -->
+    <header class="fixed w-full top-0 z-50 glass-card border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 group cursor-pointer" onclick="window.location.reload()">
+                <div class="bg-gradient-to-tr from-violet-600 to-rose-500 p-2 rounded-lg rotate-3 group-hover:rotate-12 transition-transform shadow-lg shadow-violet-500/20">
+                    <span class="text-2xl">⚡</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-2xl font-hero text-white uppercase tracking-wider leading-none">Hero Intel</h1>
+                    <span class="text-[8px] text-slate-500 font-mono">STATUS: OPERACIONAL</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
+                <a href="#busca" class="hover:text-violet-400 transition-colors">Busca Global</a>
+                <a href="#historico" class="hover:text-rose-400 transition-colors">Registos Recentes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 pt-32 pb-20">
+        
+        <!-- Secção de Procura -->
+        <section id="busca" class="text-center mb-16">
+            <h2 class="text-6xl md:text-8xl font-hero text-white mb-6 uppercase leading-none">Acesso ao Multiverso</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto mb-10 text-lg">Identifica qualquer entidade para obter inteligência tática e biográfica.</p>
+            
+            <form id="formulario-busca" class="relative max-w-2xl mx-auto">
+                <input 
+                    type="text" 
+                    id="entrada-busca" 
+                    placeholder="Nome do Herói ou Vilão..." 
+                    class="w-full bg-slate-900/50 border-2 border-slate-800 py-6 px-8 rounded-3xl text-xl text-white placeholder-slate-600 focus:outline-none focus:border-violet-500 focus:ring-8 focus:ring-violet-500/10 transition-all shadow-2xl"
+                    required
+                    autocomplete="off"
+                >
+                <button 
+                    type="submit" 
+                    class="absolute right-3 top-3 bottom-3 px-8 bg-violet-600 hover:bg-violet-500 text-white font-black uppercase tracking-tighter rounded-2xl shadow-xl transition-all active:scale-95"
+                >
+                    Analisar
+                </button>
+                
+                <!-- Autocomplete Suggestions -->
+                <div id="autocomplete-sugestoes" class="absolute top-full left-0 right-0 mt-2 bg-slate-900/95 border border-slate-700 rounded-2xl shadow-2xl hidden max-h-96 overflow-y-auto custom-scrollbar z-40">
+                    <div id="lista-sugestoes" class="py-2"></div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Indicador de Carregamento -->
+        <div id="carregando" class="hidden py-10 text-center">
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 border-4 border-violet-500/20 border-t-violet-500 rounded-full animate-spin"></div>
+                <p class="text-xs font-bold uppercase tracking-[0.4em] text-violet-400 mt-6 animate-pulse">Cruzando dados com satélites e arquivos...</p>
+            </div>
+        </div>
+
+        <!-- Mensagem de Erro -->
+        <div id="mensagem-erro" class="hidden glass-card border-rose-500/50 p-8 rounded-[2rem] mb-12 text-center border-t-4 max-w-xl mx-auto">
+            <span class="text-4xl block mb-4">⚠️</span>
+            <h3 class="font-bold text-white uppercase tracking-widest text-xl mb-2">Entidade não Catalogada</h3>
+            <p id="texto-erro" class="text-slate-400">Verifica a grafia. Tenta nomes populares como "Spider-Man" ou "Flash".</p>
+        </div>
+
+        <!-- Resultado do Herói -->
+        <section id="resultado-heroi" class="hidden">
+            <div class="glass-card rounded-[3rem] overflow-hidden shadow-2xl border-white/10">
+                <div class="flex flex-col lg:flex-row">
+                    
+                    <!-- Imagem e Nome -->
+                    <div class="lg:w-2/5 relative overflow-hidden group scan-effect">
+                        <img 
+                            id="imagem-heroi" 
+                            src="" 
+                            alt="Visual de Satélite" 
+                            class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 min-h-[500px]"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-10 left-10 right-10">
+                            <span id="editora-heroi" class="px-4 py-1.5 bg-rose-600 text-[10px] font-black uppercase tracking-[0.2em] rounded-full text-white mb-4 inline-block">Editora</span>
+                            <h2 id="nome-heroi" class="text-6xl font-hero text-white leading-tight uppercase tracking-wide">--</h2>
+                        </div>
+                    </div>
+
+                    <!-- Detalhes e Estatísticas -->
+                    <div class="lg:w-3/5 p-10 lg:p-16 flex flex-col">
+                        <div class="mb-10">
+                            <h3 class="text-xs font-black text-violet-400 uppercase tracking-[0.3em] mb-4">Perfil e Biografia</h3>
+                            <div id="descricao-heroi" class="text-slate-300 leading-relaxed text-lg mb-8 italic custom-scrollbar overflow-y-auto max-h-48 pr-4">
+                                Carregando biografia oficial...
+                            </div>
+                            <div class="grid grid-cols-2 gap-8 border-y border-white/5 py-6">
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Altura</p>
+                                    <p id="altura-heroi" class="text-2xl font-bold text-white">--</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Peso</p>
+                                    <p id="peso-heroi" class="text-2xl font-bold text-white">--</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contentor de Estatísticas (Injetado via JS) -->
+                        <div id="container-estatisticas" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Histórico -->
+        <section id="historico" class="mt-20">
+            <div class="flex items-center space-x-6 mb-10">
+                <h2 class="text-xs font-black text-slate-600 uppercase tracking-[0.5em] whitespace-nowrap">Acessos Recentes</h2>
+                <div class="h-px w-full bg-slate-800"></div>
+            </div>
+            <div id="lista-historico" class="flex flex-wrap gap-4">
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Script da Aplicação -->
+    <script src="../js/app.js"></script>
+</body>
+</html>
