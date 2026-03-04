@@ -1,4 +1,4 @@
-# HeroVerse 🦸
+# HeroVerse 
 
 Um aplicativo web interativo para explorar o universo dos super-heróis com estatísticas detalhadas e uma interface visual incrível.
 
