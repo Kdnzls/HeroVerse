@@ -1,5 +1,5 @@
  /**
-         * 🦸 HERO INTEL - Lógica do Sistema
+         * HERO VERSE - Lógica do Sistema
          * Responsável pela gestão de dados e integração com APIs.
          */
 
@@ -101,8 +101,12 @@
                 document.getElementById('imagem-heroi').src = heroi.images.lg;
                 document.getElementById('nome-heroi').textContent = heroi.name;
                 document.getElementById('editora-heroi').textContent = heroi.biography.publisher || 'Independente';
-                document.getElementById('altura-heroi').textContent = heroi.appearance.height[1] || '---';
-                document.getElementById('peso-heroi').textContent = heroi.appearance.weight[1] || '---';
+                
+                const altura = heroi.appearance.height[1] || 'Não Informado';
+                const peso = heroi.appearance.weight[1] || 'Não Informado';
+                
+                document.getElementById('altura-heroi').textContent = altura === '0 cm' ? 'Não Informado' : altura;
+                document.getElementById('peso-heroi').textContent = peso === '0 kg' ? 'Não Informado' : peso;
 
                 ui.result.classList.remove('hidden');
                 ui.desc.textContent = "A ler registos biográficos...";
@@ -129,18 +133,18 @@
         }
 
         function salvarHistorico(nome) {
-            let h = JSON.parse(localStorage.getItem('hero_h')) || [];
-            h = [nome, ...h.filter(x => x !== nome)].slice(0, 10);
-            localStorage.setItem('hero_h', JSON.stringify(h));
+            let hero = JSON.parse(localStorage.getItem('hero_h')) || [];
+            hero = [nome, ...hero.filter(x => x !== nome)].slice(0, 10);
+            localStorage.setItem('hero_h', JSON.stringify(hero));
             atualizarHistoricoUI();
         }
 
         function atualizarHistoricoUI() {
-            const h = JSON.parse(localStorage.getItem('hero_h')) || [];
+            const hero = JSON.parse(localStorage.getItem('hero_h')) || [];
             const container = document.getElementById('lista-historico');
             if (!container) return;
 
-            container.innerHTML = h.map(nome => `
+            container.innerHTML = hero.map(nome => `
                 <button onclick="document.getElementById('entrada-busca').value='${nome.replace(/'/g, "\\'")}'; window.executarBuscaGlobal('${nome.replace(/'/g, "\\'")}')" 
                         class="px-5 py-2 glass-card rounded-2xl text-[10px] font-bold text-slate-500 hover:text-violet-400 hover:border-violet-500/30 transition-all uppercase tracking-widest">
                     ${nome}
@@ -231,7 +235,7 @@
             preCarregarDados(); // Prepara o terreno
             renderizarBaseStats();
             atualizarHistoricoUI();
-            
+
             const form = document.getElementById('formulario-busca');
             const input = document.getElementById('entrada-busca');
 

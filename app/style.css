@@ -1,227 +1,148 @@
-/* ==========================================
-🦸 Web App de Super-Heróis - Premium UI
-========================================== */
 :root {
-    --primary-color: #a855f7;
-    --secondary-color: #6366f1;
-    --accent-color: #f43f5e;
-    --success-color: #10b981;
-    --error-color: #ef4444;
-    --warning-color: #f59e0b;
-    --dark-bg: #020617;
-    --card-bg: rgba(15, 23, 42, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --hero-primary: #4e02ff9a;
+    --hero-accent: #fb002a;
 }
 
-/* Reset Profissional */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-html {
-scroll-behavior: smooth;
-font-size: 16px;
-}
-
+/* 2. Body com seu fundo original preservado */
 body {
-font-family: 'Inter', system-ui, -apple-system, sans-serif;
-background-color: var(--dark-bg);
-color: #f8fafc;
-line-height: 1.6;
-overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    background-color: #020617;
+    color: #f8fafc; /* Adicionado para garantir que o texto base seja legível */
+    min-height: 100vh; /* Garante que o fundo cubra a tela toda sempre */
+    
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(244, 63, 94, 0.15) 0%, transparent 50%);
+    background-attachment: fixed;
 }
 
-/* Scrollbar Futurista */
-::-webkit-scrollbar {
-width: 8px;
+/* 3. Tipografia Hero com um leve polimento */
+.font-hero { 
+    font-family: 'Bangers', cursive; 
+    letter-spacing: 0.05em; 
+    color: var(--hero-primary); /* Aplica sua variável na cor da fonte */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Leve sombra para destacar do fundo escuro */
+}
+.glass-card {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-::-webkit-scrollbar-track {
-background: #0f172a;
+.barra-progresso {
+    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-::-webkit-scrollbar-thumb {
-background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
-border-radius: 20px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-background: var(--secondary-color);
-}
-
-/* Keyframes de Alta Performance */
-@keyframes fadeInUp {
-from {
-opacity: 0;
-transform: translateY(30px) scale(0.98);
-}
-to {
-opacity: 1;
-transform: translateY(0) scale(1);
-}
-}
-
-@keyframes slideInDown {
-from {
-opacity: 0;
-transform: translateY(-40px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
-
-@keyframes glow-pulse {
-0%, 100% { box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); }
-50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.5); }
-}
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
 
 @keyframes scanline {
-0% { transform: translateY(-100%); }
-100% { transform: translateY(100%); }
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
 }
-
-/* Estruturas Principais */
-header {
-animation: slideInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid var(--glass-border);
-}
-
-.hero-card {
-background: var(--card-bg);
-backdrop-filter: blur(20px);
-border: 1px solid var(--glass-border);
-border-radius: 2rem;
-overflow: hidden;
-animation: fadeInUp 0.7s ease-out forwards;
-}
-
-/* Componentes de Interação */
-.search-input {
-background: rgba(30, 41, 59, 0.5) !important;
-border: 2px solid #1e293b !important;
-color: white !important;
-border-radius: 1.5rem !important;
-}
-
-.search-input:focus {
-border-color: var(--primary-color) !important;
-box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15) !important;
-}
-
-.btn-search {
-background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-font-weight: 800;
-text-transform: uppercase;
-letter-spacing: 1px;
-position: relative;
-overflow: hidden;
-}
-
-.btn-search:hover {
-transform: translateY(-2px);
-filter: brightness(1.1);
-box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.4);
-}
-
-.btn-search::after {
-content: '';
-position: absolute;
-top: 0;
-left: -100%;
-width: 100%;
-height: 100%;
-background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-transition: 0.5s;
-}
-
-.btn-search:hover::after {
-left: 100%;
-}
-
-/* Badges de Histórico */
-.badge-historico {
-background: rgba(30, 41, 59, 0.6);
-border: 1px solid var(--glass-border);
-padding: 0.6rem 1.2rem;
-border-radius: 1rem;
-font-weight: 600;
-font-size: 0.75rem;
-color: #94a3b8;
-cursor: pointer;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-}
-
-.badge-historico:hover {
-background: var(--primary-color);
-color: white;
-border-color: transparent;
-transform: translateY(-3px);
-box-shadow: 0 8px 15px rgba(168, 85, 247, 0.3);
-}
-
-/* Barras de Estatísticas */
-.stat-bar-container {
-height: 6px;
-background: rgba(30, 41, 59, 0.8);
-border-radius: 10px;
-}
-
-.stat-bar-fill {
-height: 100%;
-border-radius: 10px;
-position: relative;
-box-shadow: 0 0 10px currentColor;
-}
-
-/* Efeito de Scanner para Imagens */
-.scan-effect {
-position: relative;
-}
-
 .scan-effect::after {
-content: "";
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 2px;
-background: rgba(168, 85, 247, 0.6);
-box-shadow: 0 0 15px var(--primary-color);
-animation: scanline 3s linear infinite;
-pointer-events: none;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, rgba(139, 92, 246, 0.1), transparent);
+    animation: scanline 4s linear infinite;
+    pointer-events: none;
 }
 
-/* Responsividade */
-@media (max-width: 640px) {
-.hero-card {
-border-radius: 1.5rem;
+/* --- Estilização de Inputs --- */
+input {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.6); /* Glassmorphism */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px; /* Evita o zoom automático indesejado no iOS */
+    transition: all 0.3s ease;
+    outline: none;
+    margin-bottom: 1rem;
 }
 
-h1 { font-size: 2rem; }
-
-.btn-search {
-    padding: 0.75rem 1rem;
+input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
-
+/* Efeito de Foco Neon no Input */
+input:focus {
+    border-color: var(--hero-primary);
+    background: rgba(139, 92, 246, 0.05);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
 }
 
-/* Acessibilidade */
-:focus-visible {
-outline: 2px dashed var(--primary-color);
-outline-offset: 4px;
+/* --- Estilização de Botões --- */
+.btn-hero {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hero-primary);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    
+    /* Brilho Neon Base */
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
 }
 
-/* Impressão Limpa */
-@media print {
-body { background: white; color: black; }
-header, #formulario-busca, #historico { display: none; }
+.btn-hero:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+}
+
+.btn-hero:active {
+    transform: translateY(0);
+}
+/* Ajuste Responsivo para Mobile */
+@media (max-width: 480px) {
+    input, .btn-hero {
+        padding: 18px; /* Aumenta a área de toque para dedos maiores */
+        font-size: 15px;
+    }
+}
+
+/* Centralizar texto na div de informações do herói */
+.absolute.bottom-10.left-10.right-10 {
+    text-align: center;
+}
+
+/* Ajuste Responsivo para Mobile 400px */
+@media (max-width: 400px) {
+    #altura-heroi, #peso-heroi {
+        font-size: 1rem;
+    }
+}
+/* Ajuste Responsivo para Mobile 365px */
+@media (max-width: 400px) {
+    #formulario-busca button {
+        position: relative;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        width: 100%;
+        margin-top: 8px;
+        padding: 14px 16px;
+    }
+
+    #autocomplete-sugestoes {
+        top: auto !important;
+        bottom: 100% !important;
+        margin-bottom: 8px;
+    }
 }
